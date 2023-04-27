@@ -145,7 +145,16 @@ DateParse(str, americanOrder := 0)
 	oYear := (StrLen(year) == 2 ? "20" . year : (year ? year : A_YYYY))
 	oYear := Format("{:02.0f}", oYear)
 	
-	oMonth := ((month := month + 0 ? month : InStr(monthNames, SubStr(month, 1, 3)) // 4 ) > 0 ? month + 0.0 : A_MM)
+	oMonth := 0
+	try
+		oMonth := month + 0
+	catch
+	{
+		oMonth := InStr(monthNames, SubStr(month, 1, 3)) // 4
+		if (oMonth == 0)
+			oMmonth := A_MM
+	}
+	; oMonth := ((month := month + 0 ? month : InStr(monthNames, SubStr(month, 1, 3)) // 4 ) > 0 ? month + 0.0 : A_MM)
 	oMonth := Format("{:02.0f}", oMonth)
 	
 	oDay := ((day += 0.0) ? day : A_DD) 
