@@ -109,6 +109,10 @@ DateParse(str, americanOrder := 0)
 		{ ;  month and year as digit only eg 201710
 			year := d.Year, month := d.Month
 		}
+		else if RegExMatch(str, "i)" . "^\W*(?<Year>\d{4})(?<Month>\d{2})(?<Day>\d{2})\W*$", &d) 
+		{ ;  month and year as digit only eg 20171004
+			year := d.Year, month := d.Month, day := d.Day
+		}
 		else 
 		{
 			if RegExMatch(str, "i)(\d{4})[^a-zA-Z0-9:.]+" . dayAndMonth, &d) 
@@ -160,6 +164,7 @@ DateParse(str, americanOrder := 0)
 	oDay := ((day += 0.0) ? day : A_DD) 
 	oDay := Format("{:02.0f}", oDay)
 	
+	oHour := "00", oMinute := "00", oSecond := "00"
 	if (hour != "")
 	{
 		oHour := hour + (hour == 12 ? ampm = "am" ? -12.0 : 0.0 : ampm = "pm" ? 12.0 : 0.0)
