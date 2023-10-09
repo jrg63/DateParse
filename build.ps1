@@ -1,5 +1,6 @@
-$LIBDIR = 'r:\documents\AutoHotkey\Lib'
-$DEVHOME = 'r:\documents\dev\projects\'
+$DOCDIR = 'F:\OneDrive\Documents'
+$LIBDIR = $DOCDIR + '\AutoHotkey\Lib'
+$DEVHOME = $DOCDIR + '\dev\projects\'
 $SRCDIR = $DEVHOME + '\DateParse'
 $SRC = $SRCDIR + '\DateParse.ahk'
 
