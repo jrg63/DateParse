@@ -5,7 +5,7 @@ $SRCDIR = $DEVHOME + '\DateParse'
 $SRC = $SRCDIR + '\DateParse.ahk'
 
 # turn on tracing
-Set-PSDebug -Trace 1
+Set-PSDebug -Trace 0
 
 # get the parameter
 $cmd = $args[0]

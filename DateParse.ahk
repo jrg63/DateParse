@@ -65,7 +65,7 @@ Search for named months first to prevent number month incorrectly matching in "F
 With named months day or year are optional
 if numeric month is > 12 and day is <= 12 swap month and day (probably american date)
 */
-DateParse(str, americanOrder := 0) 
+DateParse(dp_str, americanOrder := 0) 
 {
 	; Definition of several RegExes
 	static monthNames := "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-zA-Z]*"
@@ -75,15 +75,15 @@ DateParse(str, americanOrder := 0)
 
 	local i := "", timepart := "", t := "", hour := "", minute := "", seconds := "", ampm := ""
 	local d := ""
-	if RegExMatch(str, "i)^\s*(?:(\d{4})([\s\-:\/])(\d{1,2})\2(\d{1,2}))?(?:\s*[T\s](\d{1,2})([\s\-:\/])(\d{1,2})(?:\6(\d{1,2})\s*(?:(Z)|(\+|\-)?(\d{1,2})\6(\d{1,2})(?:\6(\d{1,2}))?)?)?)?\s*$", &i)
+	if RegExMatch(dp_str, "i)^\s*(?:(\d{4})([\s\-:\/])(\d{1,2})\2(\d{1,2}))?(?:\s*[T\s](\d{1,2})([\s\-:\/])(\d{1,2})(?:\6(\d{1,2})\s*(?:(Z)|(\+|\-)?(\d{1,2})\6(\d{1,2})(?:\6(\d{1,2}))?)?)?)?\s*$", &i)
 	{ ;ISO 8601 timestamps
 		year := i[1], month := i[3], day := i[4], hour := i[5], minute := i[7], second := i[8]
 	}
-	else if (!RegExMatch(str, "^\W*(?<Hour>\d{1,2}+)(?<Minute>\d{2})\W*$", &t))
+	else if (!RegExMatch(dp_str, "^\W*(?<Hour>\d{1,2}+)(?<Minute>\d{2})\W*$", &t))
 	{ 	; NOT timestring only eg 1535
 
 		; Try to extract the time parts
-		FoundPos := RegExMatch(str, "i)(\d{1,2})"	;hours
+		FoundPos := RegExMatch(dp_str, "i)(\d{1,2})"	;hours
 				. "\s*:\s*(\d{1,2})"				;minutes
 				. "(?:\s*:\s*(\d{1,2}))?"			;seconds
 				. "(?:\s*([ap]m))?", &timepart)		;am/pm
@@ -94,32 +94,32 @@ DateParse(str, americanOrder := 0)
 			second := timepart[3]
 			ampm := timepart[4]
 			; Remove time to parse the date part only
-			str := StrReplace(str, timepart[0])
+			dp_str := StrReplace(dp_str, timepart[0])
 		}
 		; Now handle the remaining string without time and try to extract date ...
-		if RegExMatch(str, "Ji)" . dayAndMonthName . "[^a-zA-Z0-9]*(?<Year>(?:\d{4}|\d{2}))?", &d) 
+		if RegExMatch(dp_str, "Ji)" . dayAndMonthName . "[^a-zA-Z0-9]*(?<Year>(?:\d{4}|\d{2}))?", &d) 
 		{ ; named month eg 22May14; May 14, 2014; 22May, 2014
 			year := d.Year, month := d.Month, day := d.Day
 		}
-		else if RegExMatch(str, "i)" . monthNameAndYear, &d) 
+		else if RegExMatch(dp_str, "i)" . monthNameAndYear, &d) 
 		{ ; named month and year without day eg May14; May 2014
 			year := d.Year, month := d.Month
 		}
-		else if RegExMatch(str, "i)" . "^\W*(?<Year>\d{4})(?<Month>\d{2})\W*$", &d) 
+		else if RegExMatch(dp_str, "i)" . "^\W*(?<Year>\d{4})(?<Month>\d{2})\W*$", &d) 
 		{ ;  month and year as digit only eg 201710
 			year := d.Year, month := d.Month
 		}
-		else if RegExMatch(str, "i)" . "^\W*(?<Year>\d{4})(?<Month>\d{2})(?<Day>\d{2})\W*$", &d) 
+		else if RegExMatch(dp_str, "i)" . "^\W*(?<Year>\d{4})(?<Month>\d{2})(?<Day>\d{2})\W*$", &d) 
 		{ ;  month and year as digit only eg 20171004
 			year := d.Year, month := d.Month, day := d.Day
 		}
 		else 
 		{
-			if RegExMatch(str, "i)(\d{4})[^a-zA-Z0-9:.]+" . dayAndMonth, &d) 
+			if RegExMatch(dp_str, "i)(\d{4})[^a-zA-Z0-9:.]+" . dayAndMonth, &d) 
 			{ ;2004/22/03
 				year := d[1], month := d[3], day := d[2]
 			}
-			else if RegExMatch(str, "i)" . dayAndMonth . "(?:[^a-zA-Z0-9:.]+((?:\d{4}|\d{2})))?", &d)
+			else if RegExMatch(dp_str, "i)" . dayAndMonth . "(?:[^a-zA-Z0-9:.]+((?:\d{4}|\d{2})))?", &d)
 			{ ;22/03/2004 or 22/03/04
 				year := d[3], month := d[2], day := d[1]
 			}
@@ -129,7 +129,7 @@ DateParse(str, americanOrder := 0)
 			}
 		}
 	}
-	else if RegExMatch(str, "^\W*(?<Hour>\d{1,2}+)(?<Minute>\d{2})\W*$", &timepart){ ; timestring only eg 1535
+	else if RegExMatch(dp_str, "^\W*(?<Hour>\d{1,2}+)(?<Minute>\d{2})\W*$", &timepart){ ; timestring only eg 1535
 		hour := timepart.hour
 		minute := timepart.minute
 	}
