@@ -20,6 +20,6 @@ sources:
 
 clean:
 	@echo Removing sources from $(DESTLIBDIR)...
-	@find $(DESTLIBDIR) -maxdepth 1 -type f \( $(foreach src,$(SRCS),-name $(notdir $(src)) -o) -false \) -exec echo Deleting: {} \; -exec rm -f {} +
+	@find $(DESTLIBDIR) -maxdepth 1 -type f \( $(foreach src,$(SRCS),-name $(notdir $(src)) -o) -false \) -exec echo Deleting: {} \; -exec rm -vf {} +
 	@echo clean completed at $$(date)
 
