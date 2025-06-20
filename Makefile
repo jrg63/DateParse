@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+HOMEDIR := /home/$(USER)
 AHK_BIN := /mnt/c/Program\ Files/AutoHotkey/Compiler/Ahk2Exe.exe
 DOCDIR := /mnt/f/OneDrive/Documents
 LIB := DateParse
@@ -13,13 +14,11 @@ all: sources
 	@echo All done at $$(date)
 
 sources:
-	@echo Copying sources to $(DESTLIBDIR)...
 	@mkdir -p $(DESTLIBDIR)
-	@rsync -av --update --info=NAME $(SRCS) $(DESTLIBDIR)
+	@rsync -av --update --info=NAME --delete $(SRCS) $(DESTLIBDIR)
 	@echo Sources copied at $$(date)
 
 clean:
-	@echo Removing sources from $(DESTLIBDIR)...
 	@find $(DESTLIBDIR) -maxdepth 1 -type f \( $(foreach src,$(SRCS),-name $(notdir $(src)) -o) -false \) -exec echo Deleting: {} \; -exec rm -vf {} +
 	@echo clean completed at $$(date)
 
