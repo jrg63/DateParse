@@ -8,12 +8,12 @@ DEVHOME := $(DOCDIR)/dev/projects/
 SRCDIR := $(DEVHOME)/$(LIB)
 SRCS := $(shell find . -maxdepth 1 -type f -name '*.ahk' ! -name 'test.ahk' -exec bash -c 'for f; do [[ "$$f" =~ [[:space:]] ]] && printf "\"%s\" " "$$f" || printf "%s " "$$f"; done' _ {} +)
 
-.PHONY: all clean sources
+.PHONY: all clean install
 
-all: sources
+all: install
 	@echo All done at $$(date)
 
-sources:
+install:
 	@mkdir -p $(DESTLIBDIR)
 	@rsync -av --update --info=NAME --delete $(SRCS) $(DESTLIBDIR)
 	@echo Sources copied at $$(date)
