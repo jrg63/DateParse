@@ -4,8 +4,8 @@ AHK_BIN := /mnt/c/Program\ Files/AutoHotkey/Compiler/Ahk2Exe.exe
 DOCDIR := /mnt/f/OneDrive/Documents
 LIB := DateParse
 DESTLIBDIR := $(DOCDIR)/AutoHotkey/Lib
-DEVHOME := $(DOCDIR)/dev/projects/
-SRCDIR := $(DEVHOME)/$(LIB)
+DEVHOME := $(DOCDIR)/dev/projects
+SRCDIR := $(DEVHOME)/Lib/$(LIB)
 SRCS := $(shell find . -maxdepth 1 -type f -name '*.ahk' ! -name 'test.ahk' -exec bash -c 'for f; do [[ "$$f" =~ [[:space:]] ]] && printf "\"%s\" " "$$f" || printf "%s " "$$f"; done' _ {} +)
 
 .PHONY: all clean install
